@@ -8,7 +8,7 @@ export const Header = () => {
         <Link href="/" className="font-bold text-brand">🥑 Abacate Cursos</Link>
 
         <SignedOut>
-          <SignInButton />
+          <SignInButton children="Entrar" />
         </SignedOut>
 
         <SignedIn>

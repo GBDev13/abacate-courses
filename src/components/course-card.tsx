@@ -7,6 +7,8 @@ import Link from "next/link";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 type CourseCardProps = {
   course: Course;
@@ -16,10 +18,18 @@ type CourseCardProps = {
 export const CourseCard = ({ course, userCourses }: CourseCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
+  const user = useUser();
+  const router = useRouter();
+
   const hasBought = userCourses.some((userCourse) => userCourse.courseId === course.id);
 
   const handleBuy = async () => {
     try {
+      if (!user.isSignedIn) {
+        router.push("/sign-in");
+        return;
+      }
+
       setIsLoading(true);
       const { data } = await axios.post("/api/courses/buy", { courseId: course.id });
 
